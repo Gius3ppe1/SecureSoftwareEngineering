@@ -55,12 +55,8 @@ Where month(datainv) = 02  AND tipo = '5'");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
 	
     "value2": 15,
