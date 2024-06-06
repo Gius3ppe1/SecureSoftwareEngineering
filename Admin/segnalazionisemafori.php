@@ -160,23 +160,30 @@
         zoom:18,
         center:location
       });
-      <?php 
-        $conn = mysqli_connect("localhost","root","","civicsense") or die("Connessione fallita");
-        $sql = "SELECT * FROM segnalazioni where tipo = '4' ";
-        $result = mysqli_query($conn,$sql);
-        if($result){
-          while($row=mysqli_fetch_assoc($result)){
-            echo "
-            var location = new google.maps.LatLng(".$row['latitudine'].",".$row['longitudine'].");
-            var marker = new google.maps.Marker({
-              map: map,
-              position: location
-           
-            }); " ;
-          }
-          mysqli_close($conn);
-        }
-      ?>
+      <?php
+              $conn = mysqli_connect("localhost", "root", "", "civicsense") or die("Connessione fallita");
+
+              $sql = "SELECT * FROM segnalazioni WHERE tipo = '4'";
+              $result = mysqli_query($conn, $sql);
+
+              if ($result) {
+                while ($row = mysqli_fetch_assoc($result)) {
+
+                  $latitude = json_encode($row['latitudine']);
+                  $longitude = json_encode($row['longitudine']);
+
+                  echo "
+                      var location = new google.maps.LatLng($latitude, $longitude);
+                      var marker = new google.maps.Marker({
+                          map: map,
+                          position: location
+                      });";
+                }
+                mysqli_close($conn);
+              } else {
+                die("Query failed: " . mysqli_error($conn));
+              }
+              ?>
       /*var marker = new google.maps.Marker({
               map: map,
               position: location

@@ -198,8 +198,8 @@ $selezione = mysqli_query($conn,"SELECT email_t, codice FROM team") or die(mysql
 if($selezione){
 	while($array=mysqli_fetch_assoc($selezione))
 	{
-		$email = $array["email_t"];
-		$codice = $array["codice"];
+		$email = htmlspecialchars($array["email_t"], ENT_QUOTES, 'UTF-8');
+      $codice = htmlspecialchars($array["codice"], ENT_QUOTES, 'UTF-8');
 
 
 		//da qui c'è il menù a discesa riempito con i valori del database

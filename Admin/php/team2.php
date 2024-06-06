@@ -10,14 +10,10 @@ if (mysqli_num_rows($quer) > 0) {
     while($row = mysqli_fetch_assoc($quer)) {
         echo "
     <tr>
-     
-                <td>".$row['id']." <br></td>
-                
-                <td>".$row['via']." <br></td> 
-                
-              <td>".$row['gravita']."<br></td>
-			  
-			    <td>".$row['tipo']."<br></td>
+                <td>" . htmlspecialchars($row['id']) . "<br></td>
+                <td>" . htmlspecialchars($row['via']) . "<br></td>
+                <td>" . htmlspecialchars($row['gravita']) . "<br></td>
+                <td>" . htmlspecialchars($row['tipo']) . "<br></td>
                
           </tr> ";
 }

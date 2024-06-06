@@ -13,25 +13,15 @@ $conn = mysqli_connect ("localhost", "root", "","civicsense") or die ("Connessio
         echo "
     <tr>
      
-                <td>".$row['id']." <br></td>
-                
-                <td>".$row['datainv']." <br></td> 
-                
-              <td>".$row['orainv']."<br></td>
-
-               <td>".$row['via']."<br></td>
-
-                <td>".$row['descrizione']."<br></td>
-
-                 <td><img width='200px' height='200px' src=".$upload_path.$row['foto']."><br></td>
-
-                  <td>".$row['email']."<br></td>
-
-                   <td>".$row['stato']."<br></td>
-
-                    <td>".$row['team']."<br></td>
-
-                   <td>".$row['gravita']."<br></td>
+    <td>" . htmlspecialchars($row['id']) . "<br></td>
+    <td>" . htmlspecialchars($row['datainv']) . "<br></td>
+    <td>" . htmlspecialchars($row['orainv']) . "<br></td>
+    <td>" . htmlspecialchars($row['via']) . "<br></td>
+    <td>" . htmlspecialchars($row['descrizione']) . "<br></td>
+    <td><img width='200px' height='200px' src='" . htmlspecialchars($upload_path . $row['foto']) . "'><br></td>
+    <td>" . htmlspecialchars($row['tipo']) . "<br></td>
+    <td>" . htmlspecialchars($row['stato']) . "<br></td>
+    <td>" . htmlspecialchars($row['gravita']) . "<br></td>
                
           </tr> ";
     }

@@ -77,12 +77,8 @@ Where month(datainv) = 03  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -102,12 +98,8 @@ Where month(datainv) = 04  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -127,12 +119,8 @@ Where month(datainv) = 05  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -152,12 +140,8 @@ Where month(datainv) = 06  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -177,12 +161,8 @@ Where month(datainv) = 07  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -202,12 +182,8 @@ Where month(datainv) = 08  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -227,12 +203,8 @@ Where month(datainv) = 09  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -252,12 +224,7 @@ Where month(datainv) = 10  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8'); }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -277,12 +244,8 @@ Where month(datainv) = 11 AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-	"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
@@ -302,12 +265,8 @@ Where month(datainv) = 12  AND tipo = '5' ");
 
 if (mysql_num_rows($quer) > 0) {
     while($row = mysql_fetch_assoc ($quer)) {
-        echo   "
-	
-		       
-			  ".$row['cont']."  
-
-"; }}
+      echo htmlspecialchars($row['cont'], ENT_QUOTES, 'UTF-8');
+     }}
 	?> ,
     "value2": 15,
     "value3": 0,
