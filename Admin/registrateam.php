@@ -58,29 +58,37 @@
       </div>
     </div>
 	
-<?php
+    <?php
+$conn = new mysqli("localhost", "root", "", "civicsense");
 
-$conn = mysql_connect ("localhost", "root", "") or die ("Connessione non riuscita"); 
-mysql_select_db ("civicsense") or die ("DataBase non trovato"); 
+if ($conn->connect_error) {
+    die("Connessione non riuscita: " . $conn->connect_error);
+}
 
-
-$email = (isset($_POST['email'])) ? $_POST['email'] : null;
-$pass = (isset($_POST['password'])) ? $_POST['password'] : null;
-
+$email = isset($_POST['email']) ? $_POST['email'] : null;
+$pass = isset($_POST['password']) ? $_POST['password'] : null;
 
 if ($email && $pass !== null) {
+    $stmt = $conn->prepare("UPDATE team SET password = ? WHERE email_t = ?");
+    if ($stmt) {
+        $stmt->bind_param("ss", $pass, $email);
+        $result = $stmt->execute();
 
+        if ($result) {
+            echo "<br><b><br><p><center><font color=white font face='Courier'> Password registrata! Clicca su <a href='login.php'>Login</a> per accedere. </b></center></p><br><br>";
+        } else {
+            echo "<br><b><br><p><center><font color=red font face='Courier'>Errore durante la registrazione della password. </b></center></p><br><br>";
+        }
 
- $query = ("UPDATE team SET password = '$pass' WHERE email_t = '$email'");
+        $stmt->close();
+    } else {
+        echo "<br><b><br><p><center><font color=red font face='Courier'>Errore nella preparazione della query. </b></center></p><br><br>";
+    }
+}
 
-$result = mysql_query($query);	
-
-if($query){
-	echo("<br><b><br><p> <center> <font color=white font face='Courier'> Password registrata! Clicca su <a href='login.php'> Login </a> per accedere. </b></center></p><br><br> ");
-} 
-}	
+$conn->close();
+?>
 	
-?>	
 	
 
     <!-- Bootstrap core JavaScript-->

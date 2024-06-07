@@ -161,29 +161,36 @@
         center:location
       });
       <?php
-              $conn = mysqli_connect("localhost", "root", "", "civicsense") or die("Connessione fallita");
 
-              $sql = "SELECT * FROM segnalazioni WHERE tipo = '4'";
-              $result = mysqli_query($conn, $sql);
+$conn = mysqli_connect("localhost", "root", "", "civicsense") or die("Connessione non riuscita");
 
-              if ($result) {
-                while ($row = mysqli_fetch_assoc($result)) {
+$idt = isset($_POST['idt']) ? $_POST['idt'] : null;
+$grav = isset($_POST['gravit']) ? $_POST['gravit'] : null;
 
-                  $latitude = json_encode($row['latitudine']);
-                  $longitude = json_encode($row['longitudine']);
+if (isset($_POST['submit'])) {
+    if ($idt && $grav !== null) {
+        // Prepare an SQL statement
+        $stmt = $conn->prepare("UPDATE segnalazioni SET gravita = ? WHERE id = ? AND tipo = '4'");
 
-                  echo "
-                      var location = new google.maps.LatLng($latitude, $longitude);
-                      var marker = new google.maps.Marker({
-                          map: map,
-                          position: location
-                      });";
-                }
-                mysqli_close($conn);
-              } else {
-                die("Query failed: " . mysqli_error($conn));
-              }
-              ?>
+        // Bind parameters
+        $stmt->bind_param("si", $grav, $idt);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            echo "<br><b><br><p> <center> <font color=black font face='Courier'> Aggiornamento avvenuto correttamente. Ricarica la pagina per aggiornare la tabella.</b></center></p><br><br>";
+        } else {
+            echo "<p> <center> <font color=black font face='Courier'> Errore nell'esecuzione dell'aggiornamento.</b></center></p>";
+        }
+
+        // Close statement
+        $stmt->close();
+    } else {
+        echo "<p> <center> <font color=black font face='Courier'> Compila tutti i campi.</b></center></p>";
+    }
+}
+
+?>
+
       /*var marker = new google.maps.Marker({
               map: map,
               position: location
@@ -197,9 +204,9 @@
     
     </script>
     
-  <script async defer 
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7GIu4drL85xcaTdq8hAtRzVWjbKxs3NQ&callback=initMap">
-    </script>
+    <?php include_once 'C:\xampp\htdocs\config.php'; ?>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['google_maps_api_key']; ?>&callback=initMap"></script>
+  
   
 			
 			<!-- FINE MAPPA -->

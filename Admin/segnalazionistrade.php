@@ -194,9 +194,9 @@
     
     </script>
     
-  <script async defer 
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7GIu4drL85xcaTdq8hAtRzVWjbKxs3NQ&callback=initMap">
-    </script>
+    <?php include_once 'C:\xampp\htdocs\config.php'; ?>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['google_maps_api_key']; ?>&callback=initMap"></script>
+  
   
 			<!-- FINE MAPPA -->
 			<br><br><br>
@@ -244,40 +244,37 @@ Modifica gravità di una segnalazione</div>
 
     </form>
 	
-<?php
+    <?php
 
-$conn = mysqli_connect ("localhost", "root", "","civicsense") or die ("Connessione non riuscita"); 
+$conn = mysqli_connect("localhost", "root", "", "civicsense") or die("Connessione non riuscita");
 
-$idt = (isset($_POST['idt'])) ? $_POST['idt'] : null;
-$grav = (isset($_POST['gravit'])) ? $_POST['gravit'] : null;
+$idt = isset($_POST['idt']) ? $_POST['idt'] : null;
+$grav = isset($_POST['gravit']) ? $_POST['gravit'] : null;
 
+if (isset($_POST['submit'])) {
+    if ($idt && $grav !== null) {
+        // Prepare an SQL statement
+        $stmt = $conn->prepare("UPDATE segnalazioni SET gravita = ? WHERE id = ? AND tipo = '1'");
 
-if (isset($_POST['submit'])){   
+        // Bind parameters
+        $stmt->bind_param("si", $grav, $idt);
 
-if ($idt && $grav !== null) {
+        // Execute the statement
+        if ($stmt->execute()) {
+            echo "<br><b><br><p> <center> <font color=black font face='Courier'> Aggiornamento avvenuto correttamente. Ricarica la pagina per aggiornare la tabella.</b></center></p><br><br>";
+        } else {
+            echo "<p> <center> <font color=black font face='Courier'> Errore nell'esecuzione dell'aggiornamento.</b></center></p>";
+        }
 
-  $resultC = mysqli_query($conn,"SELECT * FROM segnalazioni WHERE tipo = '1'");
-  if($resultC){
-    $row = mysqli_fetch_assoc($resultC);
-    if($id == $row['id']){
-      $query = "UPDATE segnalazioni SET gravita = '$grav' WHERE id = '$idt'";
-
-      $result = mysqli_query($conn,$query); 
-
-      if($query){
-        echo("<br><b><br><p> <center> <font color=black font face='Courier'> Aggiornamento avvenuto correttamente. Ricarica la pagina per aggiornare la tabella.</b></center></p><br><br> ");
-      } 
-    }else{
-      echo "<p> <center> <font color=black font face='Courier'> Inserisci ID esistente.</b></center></p>";
+        // Close statement
+        $stmt->close();
+    } else {
+        echo "<p> <center> <font color=black font face='Courier'> Compila tutti i campi.</b></center></p>";
     }
-  }
-}
-else {
-  echo ("<p> <center> <font color=black font face='Courier'> Compila tutti i campi.</b></center></p>");
-}
 }
 
 ?>
+
 <br><br><br>
 
 <div class="card-header">

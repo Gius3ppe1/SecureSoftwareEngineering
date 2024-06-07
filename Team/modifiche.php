@@ -14,17 +14,19 @@ if (isset($_POST['id'])&& isset($_POST['stato'])) {
 	$stato = $_POST['stato'];
 	$email=$_SESSION['email'];
 	$pass=$_SESSION['pass'];
-	
-	$query = "SELECT * FROM segnalazioni WHERE id =$idS";
-	
-	$result = $conn->query($query);		
+
+	// Utilizzo di query preparate per prevenire SQL injection
+	$query = $conn->prepare("SELECT * FROM segnalazioni WHERE id = ?");
+	$query->bind_param("i", $idS);
+	$query->execute();
+	$result = $query->get_result();
 	
 	if($result){
-		//da team a ente e utente
 		$row = $result->fetch_assoc();
-		if($row['stato']=="In attesa" && $stato=="In risoluzione"){ //confronta stato attuale e quello da modificare
-			$sql = "UPDATE segnalazioni SET stato = '$stato' WHERE id = $idS"; //esegui l'aggiornamento
-			$result1 = $conn->query($sql);
+		if($row['stato'] == "In attesa" && $stato == "In risoluzione"){ 
+			$sql = $conn->prepare("UPDATE segnalazioni SET stato = ? WHERE id = ?");
+			$sql->bind_param("si", $stato, $idS);
+			$result1 = $sql->execute();
 			if($result1){
 				echo("<br><b><br><p> <center> <font color=black font face='Courier'> Aggiornamento avvenuto correttamente. Ricarica la pagina per aggiornare la tabella.</b></center></p><br><br> ");
 				$mail = new PHPMailer(true);

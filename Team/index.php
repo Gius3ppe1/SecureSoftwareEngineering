@@ -137,9 +137,8 @@
     </script>
     
       
-  <script async defer 
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7GIu4drL85xcaTdq8hAtRzVWjbKxs3NQ&callback=initMap">
-    </script>
+<?php include_once 'C:\xampp\htdocs\config.php'; ?>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['google_maps_api_key']; ?>&callback=initMap"></script>
   
 
 

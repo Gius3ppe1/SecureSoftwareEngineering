@@ -40,7 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
         if (move_uploaded_file($_FILES['image']['tmp_name'], $file_path)) {
+            // Utilizzo del prepared statement per evitare SQL injection
             $stmt = $conn->prepare("INSERT INTO `segnalazioni`(`datainv`, `orainv`, `via`, `descrizione`, `foto`, `email`, `tipo`, `latitudine`, `longitudine`) VALUES (CURRENT_DATE, CURRENT_TIME, ?, ?, ?, ?, ?, ?, ?)");
+            // Bind dei parametri
             $stmt->bind_param("sssssiidd", $via, $descrizione, $unique_name, $email, $tipo, $lat, $lng);
 
             if ($stmt->execute()) {

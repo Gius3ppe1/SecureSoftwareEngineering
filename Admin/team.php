@@ -255,45 +255,38 @@ Inserisci un nuoto team</div>
 
 
 <?php
+$conn = new mysqli("localhost", "root", "", "civicsense");
 
-$conn = mysqli_connect ("localhost", "root", "","civicsense") or die ("Connessione non riuscita"); 
-
-
-
-
-# ---INSERIMENTO DA FORM ---
-
-#salvo i nomi (name) dei form in una variabile php, richiamando i valori dal form con _POST (se nel fotm era 'method=get' diventava $_GET)
-
-
-	
-$email = (isset($_POST['email'])) ? $_POST['email'] : null;
-$nomi = (isset($_POST['nomi'])) ? $_POST['nomi'] : null;
-$numeri = (isset($_POST['numero'])) ? $_POST['numero'] : null;
-$pass = (isset($_POST['password'])) ? $_POST['password'] : null;
-
-
-if (isset($_POST['submit3'])){ 
-if ($email && $nomi && $numeri && $pass !== null) {
-#inserisco i valori salvati dal form nella query di inserimento
-
- $toinsert = "INSERT INTO team
-			(email_t, npersone, nomi, password)
-			VALUES
-			('$email','$numeri', '$nomi','$pass')";
-
-
-$result = mysql_query($toinsert);	
-
-if($result){
-	echo("<b><br><p> <center> <font color=black font face='Courier'> Inserimento avvenuto correttamente! Ricarica la pagina per vedere la tabella aggiornata!</p></b></center>");
-}  
-} else {
-  echo ("<p> <center> <font color=black font face='Courier'>Compila tutti i campi.</p></b></center>");
-}
+if ($conn->connect_error) {
+    die("Connessione non riuscita: " . $conn->connect_error);
 }
 
+$email = isset($_POST['email']) ? $_POST['email'] : null;
+$nomi = isset($_POST['nomi']) ? $_POST['nomi'] : null;
+$numeri = isset($_POST['numero']) ? $_POST['numero'] : null;
+$pass = isset($_POST['password']) ? $_POST['password'] : null;
+
+if (isset($_POST['submit3'])) {
+    if ($email !== null && $nomi !== null && $numeri !== null && $pass !== null) {
+
+        $stmt = $conn->prepare("INSERT INTO team (email_t, npersone, nomi, password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $email, $numeri, $nomi, $pass);
+
+        if ($stmt->execute()) {
+            echo "<b><br><p><center><font color='black' face='Courier'> Inserimento avvenuto correttamente! Ricarica la pagina per vedere la tabella aggiornata!</font></center></p></b>";
+        } else {
+            echo "<p><center><font color='black' face='Courier'>Errore durante l'inserimento.</font></center></p>";
+        }
+
+        $stmt->close();
+    } else {
+        echo "<p><center><font color='black' face='Courier'>Compila tutti i campi.</font></center></p>";
+    }
+}
+
+$conn->close();
 ?>
+
 
 
 

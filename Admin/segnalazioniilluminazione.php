@@ -202,8 +202,9 @@
             }
           </script>
 
-          <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7GIu4drL85xcaTdq8hAtRzVWjbKxs3NQ&callback=initMap">
-          </script>
+<?php include_once 'C:\xampp\htdocs\config.php'; ?>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['google_maps_api_key']; ?>&callback=initMap"></script>
+  
 
 
           <!-- FINE MAPPA -->
@@ -256,38 +257,50 @@
             </form>
 
             <?php
+$conn = new mysqli("localhost", "root", "", "civicsense");
 
-            $conn = mysqli_connect("localhost", "root", "", "civicsense") or die("Connessione non riuscita");
+if ($conn->connect_error) {
+    die("Connessione non riuscita: " . $conn->connect_error);
+}
 
-            $idt = (isset($_POST['idt'])) ? $_POST['idt'] : null;
-            $grav = (isset($_POST['gravit'])) ? $_POST['gravit'] : null;
+$idt = isset($_POST['idt']) ? $_POST['idt'] : null;
+$grav = isset($_POST['gravit']) ? $_POST['gravit'] : null;
 
-
-            if (isset($_POST['submit'])) {
-
-              if ($idt && $grav !== null) {
-
-                $resultC = mysqli_query($conn, "SELECT * FROM segnalazioni WHERE tipo = '5'");
-                if ($resultC) {
-                  $row = mysqli_fetch_assoc($resultC);
-                  if ($id == $row['id']) {
-                    $query = "UPDATE segnalazioni SET gravita = '$grav' WHERE id = '$idt'";
-
-                    $result = mysqli_query($conn, $query);
-
-                    if ($query) {
-                      echo ("<br><b><br><p> <center> <font color=black font face='Courier'> Aggiornamento avvenuto correttamente. Ricarica la pagina per aggiornare la tabella.</b></center></p><br><br> ");
-                    }
-                  } else {
-                    echo "<p> <center> <font color=black font face='Courier'> Inserisci ID esistente.</b></center></p>";
-                  }
+if (isset($_POST['submit'])) {
+    if ($idt !== null && $grav !== null) {
+        // Uso di una query preparata per selezionare le segnalazioni
+        $stmt = $conn->prepare("SELECT * FROM segnalazioni WHERE tipo = ?");
+        $tipo = 5;
+        $stmt->bind_param("i", $tipo);
+        $stmt->execute();
+        $resultC = $stmt->get_result();
+        
+        if ($resultC->num_rows > 0) {
+            $row = $resultC->fetch_assoc();
+            if ($idt == $row['id']) {
+                $updateStmt = $conn->prepare("UPDATE segnalazioni SET gravita = ? WHERE id = ?");
+                $updateStmt->bind_param("si", $grav, $idt);
+                if ($updateStmt->execute()) {
+                    echo "<br><b><br><p><center><font color='black' face='Courier'> Aggiornamento avvenuto correttamente. Ricarica la pagina per aggiornare la tabella.</font></center></p><br><br>";
+                } else {
+                    echo "<p><center><font color='black' face='Courier'> Errore durante l'aggiornamento.</font></center></p>";
                 }
-              } else {
-                echo ("<p> <center> <font color=black font face='Courier'> Compila tutti i campi.</b></center></p>");
-              }
+                $updateStmt->close();
+            } else {
+                echo "<p><center><font color='black' face='Courier'> Inserisci ID esistente.</font></center></p>";
             }
+        } else {
+            echo "<p><center><font color='black' face='Courier'> Nessuna segnalazione trovata con il tipo specificato.</font></center></p>";
+        }
+        $stmt->close();
+    } else {
+        echo "<p><center><font color='black' face='Courier'> Compila tutti i campi.</font></center></p>";
+    }
+}
 
-            ?>
+$conn->close();
+?>
+
             <br><br><br>
 
             <div class="card-header">
