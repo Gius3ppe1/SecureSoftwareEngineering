@@ -15,7 +15,7 @@ if ($id && $team !== null) {
     mysqli_stmt_close($stmt);
 
     if ($email_t) {
-        echo('<a href="mailto: ' . $email_t . '"><center> Clicca qui per mandare un avviso al team. </center></a>');
+        echo('<a href="mailto:' . htmlspecialchars($email_t, ENT_QUOTES, 'UTF-8') . '"><center> Clicca qui per mandare un avviso al team. </center></a>');
     }
 }
 
