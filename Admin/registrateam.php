@@ -37,6 +37,12 @@
               </div>
             </div>
             <div class="form-group">
+              <div class="form-label-group">
+                <input type="password" name="VecchiaPassword" id="inputVecchiaPassword" class="form-control" placeholder="Vecchia Password" required="required">
+                <label for="inputVecchiaPassword">Vecchia Password</label>
+              </div>
+            </div>
+            <div class="form-group">
               <div class="form-row">
                 <div class="col-md-6">
                   <div class="form-label-group">
@@ -66,15 +72,18 @@ if ($conn->connect_error) {
 }
 
 $email = isset($_POST['email']) ? $_POST['email'] : null;
+$Vpass = isset($_POST['VecchiaPassword']) ? $_POST['VecchiaPassword'] : null;
 $pass = isset($_POST['password']) ? $_POST['password'] : null;
 
-if ($email && $pass !== null) {
-    $stmt = $conn->prepare("UPDATE team SET password = ? WHERE email_t = ?");
+if ($email && $Vpass && $pass !== null) {
+    $stmt = $conn->prepare("UPDATE team SET password = ? WHERE email_t = ? AND password = ?");
     if ($stmt) {
-        $stmt->bind_param("ss", $pass, $email);
+        $Vpasss= hash('sha256', $Vpass);
+        $passs= hash('sha256', $pass);
+        $stmt->bind_param("sss", $passs, $email, $Vpasss);
         $result = $stmt->execute();
 
-        if ($result) {
+        if (mysqli_affected_rows($conn)) {
             echo "<br><b><br><p><center><font color=white font face='Courier'> Password registrata! Clicca su <a href='login.php'>Login</a> per accedere. </b></center></p><br><br>";
         } else {
             echo "<br><b><br><p><center><font color=red font face='Courier'>Errore durante la registrazione della password. </b></center></p><br><br>";

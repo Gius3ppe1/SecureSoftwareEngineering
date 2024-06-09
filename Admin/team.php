@@ -268,9 +268,9 @@ $pass = isset($_POST['password']) ? $_POST['password'] : null;
 
 if (isset($_POST['submit3'])) {
     if ($email !== null && $nomi !== null && $numeri !== null && $pass !== null) {
-
+        $passs= hash('sha256', $pass);
         $stmt = $conn->prepare("INSERT INTO team (email_t, npersone, nomi, password) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $email, $numeri, $nomi, $pass);
+        $stmt->bind_param("ssss", $email, $numeri, $nomi, $passs);
 
         if ($stmt->execute()) {
             echo "<b><br><p><center><font color='black' face='Courier'> Inserimento avvenuto correttamente! Ricarica la pagina per vedere la tabella aggiornata!</font></center></p></b>";
